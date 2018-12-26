@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 parser = argparse.ArgumentParser( description="Search and download the latest CentOS7 ISO selecting the best speed mirror.", epilog="By nnsense - 2018")
 parser.add_argument("-v","--verbose", help="Show each mirror's speed and ask if download latest image (by default, it just select and downloads the ISO)", required=False, action="store_true")
 parser.add_argument("-l","--list", help="Show best speed download link and exit", required=False, action="store_true")
+parser.add_argument("-t","--tree", help="Show best speed directory tree (for kickstart) and exit", required=False, action="store_true")
 args = parser.parse_args()
 
 url = "http://isoredirect.centos.org/centos/7/isos/x86_64"
@@ -49,10 +50,15 @@ for link in linksPage.find_all('a'):
     if ( 'torrent' not in href and 'Minimal' in href ):
         file_name = href.rstrip()
         
-if args.list:
+if args.list and not args.tree:
     print "Best download option: " + besturl + "/" + file_name
     exit()
 
+if args.tree:
+    dirtree = besturl.replace("isos","os")
+    print "Use directory tree: " + dirtree
+    exit()
+    
 if isoAsk == "Y" or args.verbose == False:
     with open(file_name, "wb") as f:
             print "Downloading %s" % file_name
@@ -74,3 +80,4 @@ if isoAsk == "Y" or args.verbose == False:
                     print
 else:
     print "Quitting"
+
