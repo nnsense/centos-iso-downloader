@@ -13,3 +13,4 @@ Then get the main py script.
 Arguments:
 - `-v` or `--verbose`, enables script's verbose and interactive execution. It's basically showing the URLs the script fetched from mirrorlist, along with the speed, and it asks for downloading (instead of going ahead and download without confirmation) the latest ISO.
 - `-l` or `--list`, show best speed download link and exit. Can be used along to `-v` to also show each mirror's speed.
+- `-t` or `--tree`, show best speed OS directory tree and exit. Useful for kickstarts.
