@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 parser = argparse.ArgumentParser( description="Search and download the latest CentOS7 ISO selecting the best speed mirror.", epilog="By nnsense - 2018")
 parser.add_argument("-v","--verbose", help="Show each mirror's speed and ask if download latest image (by default, it just select and downloads the ISO)", required=False, action="store_true")
+parser.add_argument("-l","--list", help="Show best speed download link and exit", required=False, action="store_true")
 args = parser.parse_args()
 
 url = "http://isoredirect.centos.org/centos/7/isos/x86_64"
@@ -29,28 +30,30 @@ for link in source.find_all('a'):
             bestspeed = speedtest
             besturl = url
 
-print "Downloading from: " + besturl + " (speed: " + str(bestspeed) + ")"
+print "Best speed: " + besturl + " (speed: " + str(bestspeed) + ")"
 
 isoAsk = "n"
 
-if args.verbose:
-    isoAsk = raw_input('Download latest CentOS7? (Y/n)')
+if args.verbose and not args.list:
+    isoAsk = raw_input('Download latest CentOS7? (Y/n): ')
 
     while isoAsk != "Y" and isoAsk != "n":
-        isoAsk = raw_input('Download latest CentOS7? (Y/n)')
+        isoAsk = raw_input('Download latest CentOS7? (Y/n): ')
+
+f = urllib.urlopen(besturl)
+html_linksPage = f.read()
+linksPage = BeautifulSoup(html_linksPage, 'html.parser');
+
+for link in linksPage.find_all('a'):
+    href = unicode(link.string)
+    if ( 'torrent' not in href and 'Minimal' in href ):
+        file_name = href.rstrip()
+        
+if args.list:
+    print "Best download option: " + besturl + "/" + file_name
+    exit()
 
 if isoAsk == "Y" or args.verbose == False:
-    f = urllib.urlopen(besturl)
-
-    html_linksPage = f.read()
-
-    linksPage = BeautifulSoup(html_linksPage, 'html.parser');
-
-    for link in linksPage.find_all('a'):
-        href = unicode(link.string)
-        if ( 'torrent' not in href and 'Minimal' in href ):
-            file_name = href.rstrip()
-    
     with open(file_name, "wb") as f:
             print "Downloading %s" % file_name
             
