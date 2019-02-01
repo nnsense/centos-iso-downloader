@@ -7,11 +7,13 @@ The three scripts have basically the same functionality but
 - get-iso-3 is in python 3
 - get-iso.py is in python 3 and it uses threads
 
+This became pretty much a learning experiment, I advice to use the main get-iso.py script if you want the real thing.
+
 ## Setup
 Prerequisites:
 `pip install requests urllib3 pyOpenSSL bs4`
 
-Then get the main py script.
+Then get the py script.
 
 ## Usage
 `./get-centos.py (-v,-l)`
