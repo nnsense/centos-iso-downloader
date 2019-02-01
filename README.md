@@ -1,6 +1,12 @@
 # CentOS-ISO-Downloader
 A quick python script to list, test speed and download a CentOS ISO image. I'm using it just to avoid going on CentOS mirrorlist and lookup the URL to wget. 
 
+The three scripts have basically the same functionality but
+
+- get-iso-2 is in python 2
+- get-iso-3 is in python 3
+- get-iso.py is in python 3 and it uses threads
+
 ## Setup
 Prerequisites:
 `pip install requests urllib3 pyOpenSSL bs4`
