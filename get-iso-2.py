@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 # pip install requests urllib3 pyOpenSSL bs4 --force --upgrade
 import sys
 import urllib

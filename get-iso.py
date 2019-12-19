@@ -1,4 +1,6 @@
-# pip install requests urllib3 pyOpenSSL bs4 --force --upgrade
+#!/usr/bin/python3
+
+# pip install requests urllib pyOpenSSL bs4 --force --upgrade
 import sys
 import re
 import urllib
@@ -12,6 +14,7 @@ parser = argparse.ArgumentParser( description="Search and optionally download th
 parser.add_argument("-v","--version", help="Specify CentOS version: 6, 7 or 8. Default: 7", required=False, default=7)
 parser.add_argument("-d","--download", help="Download the ISO", required=False, action="store_true")
 parser.add_argument("-t","--tree", help="Show best speed directory tree (for kickstart) and exit", required=False, action="store_true")
+parser.add_argument("-s","--speed", help="Show speed for each tested link", required=False, action="store_true")
 args = parser.parse_args()
 
 
@@ -47,11 +50,12 @@ def main():
     while not queue.empty():
         speedtst = queue.get_nowait()
 
-        besturl = speedtst['url']
+        url = speedtst['url']
         speed = speedtst['speed']
-                
-        print(str(speed) + " - Mirror: " + url)
-            
+
+        if args.speed:
+            print(str(speed) + " - Mirror: " + url)
+
         if speed < bestspeed:
             bestspeed = speed
             besturl = url
@@ -60,7 +64,13 @@ def main():
     print( "-- Best speed: " + besturl + " (speed: " + str(bestspeed) + ")" )
 
     if args.tree:
-        dirtree = besturl.replace("isos","os")
+        if centos_version == "8":
+            dirtree = besturl.replace("isos","BaseOS") + "os/"
+        else:
+            dirtree = besturl.replace("isos","os")
+        
+        # http://centos.serverspace.co.uk/centos/8.0.1905/isos/x86_64/
+        # http://centos.serverspace.co.uk/centos/8.0.1905/BaseOS/x86_64/os/
         print("Use directory tree: " + dirtree)
 
     if args.download:
