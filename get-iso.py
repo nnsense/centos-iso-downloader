@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# pip install requests urllib pyOpenSSL bs4 --force --upgrade
+# pip3 install requests urllib pyOpenSSL bs4 --force --upgrade
 import sys
 import re
 import urllib
@@ -27,26 +27,26 @@ def main():
     f = urllib.request.urlopen(url)
     html = f.read()
     source = BeautifulSoup(html, 'html.parser')
-    
-    
-    
+
+
+
     threads = []
     queue = Queue()
-    
+
     # Testing each url for speed
     for link in source.find_all('a'):
         href = str(link.string)
-        
+
         if href.startswith('http') and 'x86_64' in href:
             thread = Thread( target=TestSpeed, args=( href,queue ) )
             thread.start()
             threads.append(thread)
-        
+
     for th in threads:
         th.join()
 
     bestspeed = 0.5
-    
+
     while not queue.empty():
         speedtst = queue.get_nowait()
 
@@ -68,7 +68,7 @@ def main():
             dirtree = besturl.replace("isos","BaseOS") + "os/"
         else:
             dirtree = besturl.replace("isos","os")
-        
+
         # http://centos.serverspace.co.uk/centos/8.0.1905/isos/x86_64/
         # http://centos.serverspace.co.uk/centos/8.0.1905/BaseOS/x86_64/os/
         print("Use directory tree: " + dirtree)
@@ -76,7 +76,7 @@ def main():
     if args.download:
         # Fetch the new page from the best speed link
         f = urllib.request.urlopen(besturl)
-        
+
         html_linksPage = f.read()
         linksPage = BeautifulSoup(html_linksPage, 'html.parser');
 
@@ -90,7 +90,7 @@ def main():
         with open(file_name, "wb") as f:
 
             print("Downloading %s" % file_name)
-            
+
             response = requests.get(besturl + "/" + file_name, stream=True)
             total_length = response.headers.get('content-length')
 
@@ -103,7 +103,7 @@ def main():
                     dl += len(data)
                     f.write(data)
                     done = int(50 * dl / total_length)
-                    sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
+                    sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )
                     sys.stdout.flush()
 
 
@@ -115,5 +115,5 @@ def TestSpeed(href, queue):
         queue.put_nowait(speedtest)
     except:
         pass
-        
+
 if __name__ == '__main__': main()
