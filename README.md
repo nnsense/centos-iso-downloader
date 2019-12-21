@@ -15,12 +15,13 @@ Prerequisites:
 Then get the py script and make it executable.
 
 ## Usage
-`./get-iso.py (-v,-t,-d)`
+`./get-iso.py (-v,-t,-d,-s)`
 
 Arguments:
 - `-v` or `--version`, select the CentOS version. Valid options are 6, 7 or 8. Default is 7 (CentOS7).
 - `-d` or `--download`, show the URL with the best download speed and then download the **MINIMAL** ISO, which for CentOS8 is the boot ISO since the full DVD is over 6 GB.
 - `-t` or `--tree`, show best speed OS directory tree and exit. Useful for Anaconda kickstart.
+- `-s` or `--speed`, show the speed of each URL tested.
 
 ## Example
 
