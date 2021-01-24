@@ -6,7 +6,7 @@ The scripts have basically the same functionality but
 - get-iso.py is in python 3 and it uses threads
 - get-iso-2 is in python 2, here for historical reasons and doesn't use threads. I'm also not updating it..
 
-This is pretty much a learning experimeny, but get-iso.py is actually working quite well, I'm using it to download ISOs for KVM.
+This is pretty much a learning experiment, but get-iso.py is actually working quite well, I'm using it to download ISOs for KVM.
 
 ## Setup
 Prerequisites:
