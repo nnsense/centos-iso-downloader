@@ -3,7 +3,7 @@
 # pip3 install requests urllib pyOpenSSL bs4 --force --upgrade
 import sys
 import re
-import urllib
+import urllib.request
 import requests
 import argparse
 from threading import Thread
@@ -45,7 +45,8 @@ def main():
     for th in threads:
         th.join()
 
-    bestspeed = 0.5
+    bestspeed = float('inf')
+    besturl = None
 
     while not queue.empty():
         speedtst = queue.get_nowait()
@@ -60,6 +61,10 @@ def main():
             bestspeed = speed
             besturl = url
 
+
+    if besturl is None:
+        print("No reachable mirror found")
+        return
 
     print( "-- Best speed: " + besturl + " (speed: " + str(bestspeed) + ")" )
 
